@@ -4,6 +4,7 @@ interface Game {
   imageUrl: string;
   url: string;
   oneLiner?: string;
+  achievements?: string[];
 }
 
 const games: Game[] = [
@@ -15,6 +16,10 @@ const games: Game[] = [
     url: "https://ballcombine.vercel.app",
     oneLiner:
       "A Suika inspired physics game built with HTML/JS/CSS, Rapier.js, and FireBase.",
+    achievements: [
+      "500+ attempts on the leaderboard",
+      "500,000+ balls dropped",
+    ],
   },
   {
     title: "Collaborative Blackout Poem",
@@ -24,6 +29,7 @@ const games: Game[] = [
     url: "https://blackoutpoem.glitch.me/",
     oneLiner:
       "A multiplayer blackout poem creator built with React, Node, and Socket.io.",
+    achievements: ["Used in classrooms at Community College of Philadelphia"],
   },
   {
     title: "Guitar Chess",
@@ -32,6 +38,7 @@ const games: Game[] = [
     imageUrl: "/guitarChess.png",
     url: "https://beasleydog.github.io/guitarchess/",
     oneLiner: "A guitar-controlled chess game built with HTML/JS/CSS.",
+    achievements: ["Used in classrooms at Upper Dublin High School"],
   },
   {
     title: "Planscape",
@@ -41,6 +48,10 @@ const games: Game[] = [
     url: "https://beasleydog.github.io/planscape/",
     oneLiner:
       "A physics puzzle game designed to promote resilience and problem-solving.",
+    achievements: [
+      "Winner of the 2022 Congressional App Challenge",
+      "Displayed in the U.S. Capitol",
+    ],
   },
   {
     title: "Scrambled",
@@ -50,6 +61,9 @@ const games: Game[] = [
     url: "https://beasleydog.github.io/tiletalk/build/",
     oneLiner:
       "A word scramble game designed to raise awareness about climate change.",
+    achievements: [
+      "National winner of the 2023 Games For Change Accessibility Challenge",
+    ],
   },
   {
     title: "Seeking Connection",
@@ -59,6 +73,10 @@ const games: Game[] = [
     url: "https://beasleydog.github.io/seekingconnection/",
     oneLiner:
       "A strategy game inspired by Connect 4 designed to promote connection during COVID.",
+    achievements: [
+      "Winner of the 2022 Games For Change Accessibility Challenge",
+      "Finalist in Gee Learning Game Awards 2022",
+    ],
   },
   {
     title: "Collaborative Crossword",
@@ -67,6 +85,7 @@ const games: Game[] = [
     url: "https://beasleydog.github.io/collaborativecrossword",
     oneLiner:
       "A multiplayer crossword generator built with Google Apps Scripts",
+    achievements: ["Used in classrooms at Community College of Philadelphia"],
   },
 ];
 

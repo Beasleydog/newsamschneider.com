@@ -395,133 +395,207 @@ export default function ArcadeMachineViewer() {
     ctx: CanvasRenderingContext2D,
     canvas: HTMLCanvasElement
   ) => {
-    // Clear the canvas
+    // Clear and draw background
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawStaticBackground(ctx, canvas);
-    // Define the target box size (half of canvas dimensions)
-    const boxWidth = canvas.width - 100;
-    const boxHeight = canvas.height - 100;
+
+    const OUTER_PADDING = 40;
+    const INNER_PADDING = 20;
+    const boxWidth = canvas.width - OUTER_PADDING * 2;
+    const boxHeight = canvas.height - OUTER_PADDING * 2;
     const x = (canvas.width - boxWidth) / 2;
     const y = (canvas.height - boxHeight) / 2;
-    const radius = 20; // Corner radius
+    const contentX = x + INNER_PADDING;
+    let currentY = y + INNER_PADDING + 40;
+    const contentWidth = boxWidth - INNER_PADDING * 2;
 
-    // Create rounded rectangle path
-    ctx.beginPath();
-    ctx.moveTo(x + radius, y);
-    ctx.lineTo(x + boxWidth - radius, y);
-    ctx.quadraticCurveTo(x + boxWidth, y, x + boxWidth, y + radius);
-    ctx.lineTo(x + boxWidth, y + boxHeight - radius);
-    ctx.quadraticCurveTo(
-      x + boxWidth,
-      y + boxHeight,
-      x + boxWidth - radius,
-      y + boxHeight
-    );
-    ctx.lineTo(x + radius, y + boxHeight);
-    ctx.quadraticCurveTo(x, y + boxHeight, x, y + boxHeight - radius);
-    ctx.lineTo(x, y + radius);
-    ctx.quadraticCurveTo(x, y, x + radius, y);
-    ctx.closePath();
-
-    // Create clipping path for the image
-    ctx.save();
-    ctx.clip();
-
-    // Draw the title first
-    const drawTitle = () => {
-      if (!fontLoaded.current) return;
-
-      ctx.font = "52px 'Press Start 2P'";
-      ctx.fillStyle = "#ffff00";
-      ctx.textAlign = "center";
-
-      // Break title into words
-      const words = games[currentImage].title.split(" ");
-      const lineHeight = 50;
-      let titleY = y + 100; // Position title at top
-
-      // Draw each word on a new line
-      words.forEach((word, i) => {
-        ctx.fillText(word, x + boxWidth / 2, titleY + i * lineHeight);
-      });
-    };
-
-    // Draw title
-    drawTitle();
-
-    // Draw description (placeholder - add game description to your data structure)
     if (fontLoaded.current) {
-      ctx.font = "24px 'Press Start 2P'";
+      // Title Section
+      ctx.font = "40px 'Press Start 2P'";
       ctx.fillStyle = "#ffff00";
-      ctx.textAlign = "center";
-      const description =
-        games[currentImage].oneLiner || "No description available";
-      const words = description.split(" ");
-      const lineHeight = 30;
-      let descY = y + 250; // Position description below title
+      ctx.textAlign = "left";
 
+      const titleLineHeight = 45;
+      const words = games[currentImage].title.split(" ");
       let line = "";
+
       words.forEach((word) => {
         const testLine = line + word + " ";
-        const metrics = ctx.measureText(testLine);
-        if (metrics.width > boxWidth - 100) {
-          ctx.fillText(line, x + boxWidth / 2, descY);
+        if (ctx.measureText(testLine).width > contentWidth) {
+          ctx.fillText(line, contentX, currentY);
           line = word + " ";
-          descY += lineHeight;
+          currentY += titleLineHeight;
         } else {
           line = testLine;
         }
       });
-      ctx.fillText(line, x + boxWidth / 2, descY);
-    }
+      ctx.fillText(line, contentX, currentY);
 
-    // Use the preloaded image
-    const currentSrc = games[currentImage].imageUrl;
-    const img = loadedImages.current[currentSrc];
-    if (img) {
-      // Calculate scale to fit image in remaining space
-      const imageAreaHeight = boxHeight - 400; // Reserve space for title and description
-      const scale = Math.min(
-        (boxWidth - 100) / img.width,
-        imageAreaHeight / img.height
-      );
-      const width = img.width * scale;
-      const height = img.height * scale;
+      // Description Section with balanced gap after title
+      currentY += titleLineHeight * 0.8;
+      ctx.font = "20px 'Press Start 2P'";
+      const description =
+        games[currentImage].oneLiner || "No description available";
+      const descWords = description.split(" ");
+      line = "";
+      const descLineHeight = 30;
 
-      // Center the image in the bottom portion
-      const imageX = x + (boxWidth - width) / 2;
-      const imageY = y + boxHeight - height - 50; // Position at bottom with padding
-
-      // Create an offscreen canvas for image processing
-      const offscreen = document.createElement("canvas");
-      offscreen.width = width;
-      offscreen.height = height;
-      const offCtx = offscreen.getContext("2d");
-
-      if (offCtx) {
-        // Draw and process the image
-        offCtx.drawImage(img, 0, 0, width, height);
-        const imageData = offCtx.getImageData(0, 0, width, height);
-        const data = imageData.data;
-
-        // Convert to black-yellow scale
-        for (let i = 0; i < data.length; i += 4) {
-          const brightness =
-            data[i] * 0.299 + data[i + 1] * 0.587 + data[i + 2] * 0.114;
-          data[i] = brightness * 0.8;
-          data[i + 1] = brightness * 0.8;
-          data[i + 2] = 0;
-          data[i + 3] = 255;
+      descWords.forEach((word) => {
+        const testLine = line + word + " ";
+        if (ctx.measureText(testLine).width > contentWidth) {
+          ctx.fillText(line, contentX, currentY);
+          line = word + " ";
+          currentY += descLineHeight;
+        } else {
+          line = testLine;
         }
+      });
+      ctx.fillText(line, contentX, currentY);
 
-        offCtx.putImageData(imageData, 0, 0);
-        ctx.drawImage(offscreen, imageX, imageY, width, height);
+      // Larger gap between description and achievements
+      currentY += descLineHeight * 3;
 
-        // Apply glitch effect if needed
-        if (glitchAmount > 0) {
-          applyGlitchEffect(ctx, canvas, glitchAmount);
+      // Achievements Section (removed title, just showing achievements)
+      ctx.font = "16px 'Press Start 2P'";
+      let achievementY = currentY;
+
+      const achievements = games[currentImage].achievements || [
+        "High Score Champion",
+        "Speed Runner",
+        "Perfect Game",
+      ];
+
+      achievements.forEach((achievement) => {
+        if (achievementY + 35 > y + boxHeight - INNER_PADDING * 6) return;
+
+        // Medal
+        const medalSize = 20;
+        const medalX = contentX;
+        const medalY = achievementY - medalSize + 5;
+
+        // Medal circle
+        ctx.beginPath();
+        ctx.arc(
+          medalX + medalSize / 2,
+          medalY + medalSize / 2,
+          medalSize / 2,
+          0,
+          Math.PI * 2
+        );
+        ctx.fillStyle = "#FFD700";
+        ctx.fill();
+        ctx.strokeStyle = "#DAA520";
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        // Medal ribbon
+        ctx.beginPath();
+        ctx.moveTo(medalX + medalSize / 2, medalY + medalSize);
+        ctx.lineTo(medalX + medalSize / 2 - 6, medalY + medalSize + 10);
+        ctx.lineTo(medalX + medalSize / 2 + 6, medalY + medalSize + 10);
+        ctx.closePath();
+        ctx.fillStyle = "#FF0000";
+        ctx.fill();
+
+        // Star
+        const starPoints = 5;
+        const starRadius = medalSize / 4;
+        ctx.beginPath();
+        for (let i = 0; i < starPoints * 2; i++) {
+          const radius = i % 2 === 0 ? starRadius : starRadius / 2;
+          const angle = (i * Math.PI) / starPoints;
+          const starX =
+            medalX + medalSize / 2 + radius * Math.cos(angle - Math.PI / 2);
+          const starY =
+            medalY + medalSize / 2 + radius * Math.sin(angle - Math.PI / 2);
+          i === 0 ? ctx.moveTo(starX, starY) : ctx.lineTo(starX, starY);
+        }
+        ctx.fillStyle = "#FFFFFF";
+        ctx.fill();
+
+        // Achievement text with proper wrapping
+        ctx.fillStyle = "#ffff00";
+        const medalPadding = medalSize + 10;
+        const maxAchievementWidth = contentWidth - medalPadding - INNER_PADDING;
+        let currentAchievementX = medalX + medalPadding;
+
+        const achievementWords = achievement.split(" ");
+        let achievementLine = "";
+
+        achievementWords.forEach((word) => {
+          const testLine = achievementLine + word + " ";
+          if (ctx.measureText(testLine).width > maxAchievementWidth) {
+            ctx.fillText(achievementLine, currentAchievementX, achievementY);
+            achievementLine = word + " ";
+            achievementY += 25;
+          } else {
+            achievementLine = testLine;
+          }
+        });
+        ctx.fillText(achievementLine, currentAchievementX, achievementY);
+        achievementY += 35;
+      });
+
+      currentY = achievementY + INNER_PADDING;
+
+      // Image Section (now full width at bottom)
+      const currentSrc = games[currentImage].imageUrl;
+      const img = loadedImages.current[currentSrc];
+      if (img) {
+        // Calculate maximum available space for image
+        const maxImageWidth = contentWidth;
+        const maxImageHeight = y + boxHeight - currentY - INNER_PADDING;
+
+        // Calculate scale while maintaining aspect ratio
+        const scale = Math.min(
+          maxImageWidth / img.width,
+          maxImageHeight / img.height
+        );
+
+        const finalWidth = img.width * scale;
+        const finalHeight = img.height * scale;
+
+        // Center the image horizontally
+        const centerX = contentX + (contentWidth - finalWidth) / 2;
+        const centerY = currentY;
+
+        const offscreen = document.createElement("canvas");
+        offscreen.width = finalWidth;
+        offscreen.height = finalHeight;
+        const offCtx = offscreen.getContext("2d");
+
+        if (offCtx) {
+          offCtx.drawImage(img, 0, 0, finalWidth, finalHeight);
+          const imageData = offCtx.getImageData(0, 0, finalWidth, finalHeight);
+          const data = imageData.data;
+
+          // Yellow tint
+          for (let i = 0; i < data.length; i += 4) {
+            const brightness =
+              data[i] * 0.299 + data[i + 1] * 0.587 + data[i + 2] * 0.114;
+            data[i] = brightness; // R
+            data[i + 1] = brightness; // G
+            data[i + 2] = 0; // B
+            data[i + 3] = 255; // A
+          }
+
+          offCtx.putImageData(imageData, 0, 0);
+          ctx.drawImage(offscreen, centerX, centerY, finalWidth, finalHeight);
         }
       }
+
+      // Progress bar at the bottom
+      const progressBarHeight = 40;
+      const progressBarY = canvas.height - progressBarHeight;
+      const progressWidth = (canvas.width * (currentImage + 1)) / games.length;
+
+      ctx.fillStyle = "#ffff00";
+      ctx.fillRect(0, progressBarY, progressWidth, progressBarHeight);
+    }
+
+    // Apply glitch effect if needed (moved after progress bar)
+    if (glitchAmount > 0) {
+      applyGlitchEffect(ctx, canvas, glitchAmount);
     }
 
     ctx.restore();
