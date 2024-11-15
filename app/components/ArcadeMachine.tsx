@@ -1,15 +1,76 @@
 "use client";
 import React, { Suspense, useEffect, useState, useRef } from "react";
-import { Canvas, useFrame, ThreeEvent } from "@react-three/fiber";
+import { Canvas, useFrame, ThreeEvent, extend } from "@react-three/fiber";
 import {
   CameraControls,
   OrbitControls,
   PerspectiveCamera,
   useGLTF,
+  shaderMaterial,
 } from "@react-three/drei";
 import * as THREE from "three";
 import gsap from "gsap";
 import { games } from "@/app/constants/games";
+
+const CRTMaterial = shaderMaterial(
+  {
+    map: null,
+    time: 0,
+    resolution: new THREE.Vector2(800, 800),
+  },
+  // Vertex shader
+  `
+    varying vec2 vUv;
+    void main() {
+      vUv = uv;
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+    }
+  `,
+  // Fragment shader
+  `
+    uniform sampler2D map;
+    uniform float time;
+    uniform vec2 resolution;
+    varying vec2 vUv;
+
+    void main() {
+      vec2 uv = vUv;
+      
+      vec2 curved_uv = uv * 2.0 - 1.0;
+      vec2 offset = curved_uv.yx / 6.0;
+      curved_uv += curved_uv * offset * offset;
+      curved_uv = curved_uv * 0.5 + 0.5;
+      
+      vec4 color = vec4(0.0, 0.0, 0.0, 1.0);
+      
+      if (curved_uv.x >= 0.0 && curved_uv.x <= 1.0 && curved_uv.y >= 0.0 && curved_uv.y <= 1.0) {
+        float scanline = sin(curved_uv.y * resolution.y * 2.0) * 0.02;
+        
+        float r = texture2D(map, curved_uv + vec2(0.001, 0.0)).r;
+        float g = texture2D(map, curved_uv).g;
+        float b = texture2D(map, curved_uv - vec2(0.001, 0.0)).b;
+
+        vec2 vigUV = curved_uv * (1.0 - curved_uv.yx);
+        float vig = vigUV.x * vigUV.y * 15.0;
+        vig = pow(vig, 0.25);
+
+        float flicker = 0.95 + 0.05 * sin(time * 8.0);
+
+        vec3 col = vec3(r, g, b);
+        col *= (1.0 + scanline);
+        col *= vig;
+        col *= flicker;
+        
+        color = vec4(col, 1.0);
+      }
+      
+      gl_FragColor = color;
+    }
+  `
+);
+
+extend({ CRTMaterial });
+
 interface ArcadeMachineProps {
   onJoystickMove?: (position: number) => void; // -1 to 1, representing up/down
   onButtonPress?: (isPressed: boolean) => void;
@@ -58,23 +119,18 @@ function ArcadeMachine({
     // Find Mesh_8 and apply the canvas texture
     const screenMesh = gltf.scene.getObjectByName("Mesh_8");
     if (screenMesh && screenMesh instanceof THREE.Mesh) {
-      // Create canvas and texture with higher resolution
       const canvas = document.createElement("canvas");
       canvas.width = 800;
       canvas.height = 800;
       const texture = new THREE.CanvasTexture(canvas);
-
-      // Add texture filtering for better quality
       texture.minFilter = THREE.LinearFilter;
       texture.magFilter = THREE.LinearFilter;
-
-      // Apply texture to the mesh
-      screenMesh.material = new THREE.MeshBasicMaterial({
+      const crtMaterial = new CRTMaterial({
         map: texture,
-        side: THREE.DoubleSide,
+        time: 0,
+        resolution: new THREE.Vector2(800, 800),
       });
-
-      // Store refs for animation
+      screenMesh.material = crtMaterial;
       canvasRef.current = canvas;
       canvasTextureRef.current = texture;
     }
@@ -141,6 +197,11 @@ function ArcadeMachine({
         onJoystickMove?.(normalizedPosition);
       }
       lastJoystickPosition.current = normalizedPosition;
+    }
+
+    const screenMesh = gltf.scene.getObjectByName("Mesh_8");
+    if (screenMesh && screenMesh instanceof THREE.Mesh) {
+      screenMesh.material.uniforms.time.value = state.clock.elapsedTime;
     }
   });
 
