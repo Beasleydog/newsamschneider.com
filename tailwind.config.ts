@@ -8,9 +8,9 @@ export default {
   ],
   theme: {
     extend: {
-      colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
+      fontFamily: {
+        sans: ["var(--font-libre-baskerville)"],
+        arcade: ["var(--font-press-start-2p)"],
       },
     },
   },
