@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { AnimatedIntro } from "./components/AnimatedIntro";
 import { WorkExperience } from "./components/WorkExperience";
 import { Games } from "./components/Games";
-import ArcadeMachineViewer from "./components/ArcadeMachine";
+import ArcadeMachineViewer from "./components/arcademachine/ArcadeMachineViewer";
 export default function Home() {
   const [loadContent, setLoadContent] = useState(false);
 
