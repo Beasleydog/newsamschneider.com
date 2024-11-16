@@ -14,11 +14,8 @@ export default function ArcadeMachineViewer() {
   const [glitchAmount, setGlitchAmount] = useState(0);
   const [screenLightModifier, setScreenLightModifier] = useState(0); // Start with screen off
   const [scanLinePosition, setScanLinePosition] = useState(-1); // -1 means off, 0-100 is the position
-  const [screenBrightness, setScreenBrightness] = useState(0);
-  const [horizontalSync, setHorizontalSync] = useState(false);
-  const [verticalPinch, setVerticalPinch] = useState(0); // New: for the pinch effect
-  const [screenScale, setScreenScale] = useState(0.1); // New: for the scale effect
-
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [fadeToWhite, setFadeToWhite] = useState(false);
   useEffect(() => {
     // Load font first
     const loadFont = async () => {
@@ -64,22 +61,36 @@ export default function ArcadeMachineViewer() {
   }, []);
 
   const handleJoystickMove = (position: number) => {
-    // Start glitch effect and dim screen
-    setGlitchAmount(20);
-    setScreenLightModifier(0.5); // Dim the screen
+    // If already transitioning, ignore input
+    if (isTransitioning) return;
 
-    // After a short delay, change image and remove glitch
+    // Check if we're on the last game and trying to go forward
+    if (currentImage === games.length - 1 && position > 0) {
+      setIsTransitioning(true);
+      // Start glitch effect and fade to white
+      setGlitchAmount(20);
+      setScreenLightModifier(2); // Increase brightness
+
+      setTimeout(() => {
+        setFadeToWhite(true);
+      }, 1500);
+      return;
+    }
+
+    // Original joystick move logic
+    setGlitchAmount(20);
+    setScreenLightModifier(0.5);
+
     setTimeout(() => {
       const newIndex = (currentImage + position + games.length) % games.length;
       setCurrentImage(newIndex);
 
-      // Fade out glitch effect and restore screen brightness
       setTimeout(() => {
         setGlitchAmount(10);
         setScreenLightModifier(0.75);
         setTimeout(() => {
           setGlitchAmount(0);
-          setScreenLightModifier(1); // Restore full brightness
+          setScreenLightModifier(1);
         }, 100);
       }, 100);
     }, 200);
@@ -103,7 +114,8 @@ export default function ArcadeMachineViewer() {
       },
       currentImage,
       glitchAmount,
-      1
+      1,
+      isTransitioning
     );
     console.log(scanLinePosition);
     // Draw scan line and black overlay
@@ -130,7 +142,13 @@ export default function ArcadeMachineViewer() {
   };
 
   return (
-    <div className="w-full h-screen">
+    <div
+      className="w-full h-screen"
+      style={{
+        transition: "opacity 1s",
+        opacity: fadeToWhite ? 0 : 1,
+      }}
+    >
       <Canvas gl={{ antialias: true }}>
         <Suspense fallback={null}>
           <Scene
@@ -138,6 +156,7 @@ export default function ArcadeMachineViewer() {
             onButtonPress={handleButtonPress}
             onDraw={handleDraw}
             screenLightModifier={screenLightModifier}
+            isTransitioning={isTransitioning}
           />
         </Suspense>
       </Canvas>

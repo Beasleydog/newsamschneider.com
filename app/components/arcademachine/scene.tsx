@@ -10,6 +10,7 @@ function Scene({
   onButtonPress,
   onDraw,
   screenLightModifier,
+  isTransitioning,
 }: ArcadeMachineProps) {
   const orbitControlsRef = useRef<any>(null);
   const [directionalIntensity, setDirectionalIntensity] = useState(0);
@@ -69,6 +70,53 @@ function Scene({
     }, 3);
   }, []);
 
+  useEffect(() => {
+    if (isTransitioning && orbitControlsRef.current) {
+      setTimeout(() => {
+        const camera = orbitControlsRef.current;
+
+        // Disable controls during transition
+        camera.enabled = false;
+
+        // Create zoom animation
+        gsap
+          .timeline()
+          .to(camera.object.position, {
+            x: 0,
+            y: 0.9,
+            z: -4.8,
+            duration: 2,
+            ease: "power2.inOut",
+          })
+          .to(
+            camera.target,
+            {
+              x: 0,
+              y: 0.9,
+              z: -4.93,
+              duration: 2,
+              ease: "power2.inOut",
+              onUpdate: () => camera.update(),
+            },
+            "<"
+          );
+
+        // Increase screen light intensity
+        gsap.to(
+          { intensity: directionalIntensity },
+          {
+            intensity: 10,
+            duration: 2,
+            onUpdate: function () {
+              setDirectionalIntensity(this.targets()[0].intensity);
+            },
+            ease: "power2.inOut",
+          }
+        );
+      }, 500);
+    }
+  }, [isTransitioning]);
+
   return (
     <>
       <ambientLight intensity={0.01} />
@@ -115,10 +163,10 @@ function Scene({
         ref={orbitControlsRef}
         makeDefault
         target={[0, 0, 0]}
-        // enabled={false}
-        // enableZoom={false}
-        // enablePan={false}
-        // enableRotate={false}
+        enabled={false}
+        enableZoom={false}
+        enablePan={false}
+        enableRotate={false}
       />
     </>
   );

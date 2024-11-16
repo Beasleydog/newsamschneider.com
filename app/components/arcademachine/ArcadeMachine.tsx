@@ -11,6 +11,7 @@ function ArcadeMachine({
   onButtonPress,
   onDraw,
   screenLightModifier,
+  isTransitioning,
 }: ArcadeMachineProps) {
   const gltf = useGLTF("/arcademachine.glb");
   const [isPressed, setIsPressed] = useState(false);

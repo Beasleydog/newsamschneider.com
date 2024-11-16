@@ -11,7 +11,8 @@ export const drawCanvas = (
   utils: CanvasUtils,
   currentImage: number,
   glitchAmount: number,
-  screenLightModifier: number
+  screenLightModifier: number,
+  isTransitioning: boolean
 ) => {
   // Clear and draw background
   ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -68,7 +69,22 @@ export const drawCanvas = (
     applyGlitchEffect(ctx, canvas, glitchAmount, screenLightModifier);
   }
 
+  if (isTransitioning) {
+    applyTransitionEffect(ctx, canvas);
+  }
+
   ctx.restore();
+};
+
+let transitionOpacity = 0;
+const applyTransitionEffect = (
+  ctx: CanvasRenderingContext2D,
+  canvas: HTMLCanvasElement
+) => {
+  //Draw white overlay
+  ctx.fillStyle = `rgba(255, 255, 255, ${transitionOpacity})`;
+  transitionOpacity += 0.05;
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
 };
 
 const drawTitle = (
