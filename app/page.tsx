@@ -7,13 +7,12 @@ import { WorkExperience } from "./components/WorkExperience";
 import { Games } from "./components/Games";
 import ArcadeMachineViewer from "./components/arcademachine/ArcadeMachineViewer";
 export default function Home() {
-  const [loadContent, setLoadContent] = useState(false);
+  const [loadContent, setLoadContent] = useState(true);
 
   return (
     <div className="min-h-screen flex flex-col items-center">
-      <main className="h-screen w-full flex flex-col items-center">
-        <ArcadeMachineViewer />
-        {/* <AnimatedIntro setLoadContent={setLoadContent} />
+      <main className="w-full flex flex-col items-center">
+        <AnimatedIntro setLoadContent={setLoadContent} />
         {loadContent && (
           <>
             <motion.p
@@ -29,7 +28,7 @@ export default function Home() {
             <WorkExperience />
             <Games />
           </>
-        )} */}
+        )}
       </main>
     </div>
   );

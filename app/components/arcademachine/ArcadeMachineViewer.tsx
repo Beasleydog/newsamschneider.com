@@ -117,7 +117,6 @@ export default function ArcadeMachineViewer() {
       1,
       isTransitioning
     );
-    console.log(scanLinePosition);
     // Draw scan line and black overlay
     if (scanLinePosition < 100 && scanLinePosition >= 0) {
       const scanY = (canvas.height * scanLinePosition) / 100;
@@ -143,7 +142,7 @@ export default function ArcadeMachineViewer() {
 
   return (
     <div
-      className="w-full h-screen"
+      className="w-1/2 h-screen"
       style={{
         transition: "opacity 1s",
         opacity: fadeToWhite ? 0 : 1,
@@ -160,6 +159,13 @@ export default function ArcadeMachineViewer() {
           />
         </Suspense>
       </Canvas>
+      <div
+        className="w-full h-full bg-transparent transform -translate-y-full"
+        style={{
+          boxShadow: "#000000 0px -50px 50px 0px inset",
+          clipPath: "inset(calc(100% - 100px) 0px 0px 0px)",
+        }}
+      />
     </div>
   );
 }
