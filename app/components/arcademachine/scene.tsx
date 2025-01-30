@@ -15,7 +15,7 @@ function Scene({
   const orbitControlsRef = useRef<any>(null);
   const cameraRef = useRef<THREE.PerspectiveCamera>(null);
   const isDraggingRef = useRef(false);
-  const defaultAzimuth = useRef(0.3654245644654168);
+  const defaultAzimuth = useRef(0.4654245644654168);
   const defaultPolar = useRef(1.5707963267948966);
   const offsetDistance = useRef(0.2);
 
@@ -26,7 +26,6 @@ function Scene({
       const controls = orbitControlsRef.current;
       const azimuth = controls.getAzimuthalAngle();
       const polar = controls.getPolarAngle();
-      console.log(azimuth, polar);
       const azDistance = defaultAzimuth.current - azimuth;
       const polarDistance = defaultPolar.current - polar;
       if (Math.abs(azDistance) > 0.01)
@@ -41,7 +40,7 @@ function Scene({
   useEffect(() => {
     setTimeout(() => {
       // cameraRef.current?.position.set(-6.4, -3.95, 0);
-      cameraRef.current?.position.set(0.44, 0.8, 1.15);
+      cameraRef.current?.position.set(0.44, -0.1, 1.15);
       cameraRef.current?.rotation.set(0, 0.4, 0);
     }, 10);
   }, []);
@@ -50,7 +49,6 @@ function Scene({
     <>
       <ambientLight intensity={0.01} />
       <ambientLight intensity={0.01} />
-      <color attach="background" args={["#000000"]} />
       <spotLight
         position={[0, 1, 1]}
         intensity={4}

@@ -37,7 +37,7 @@ export const experiences: Experience[] = [
     company: "RemNote",
     type: "internship",
     role: "Software Engineering Intern",
-    period: "June 2022 - September 2022",
+    period: "June 2023 - September 2023",
     highlights: [
       "Built RemNote Web Clipper Chrome Extension, reached 12,000+ downloads after successful launch",
       "Extension was developed with React & Typescript, allowed users to take notes on any webpage via Chrome Side Panel API",

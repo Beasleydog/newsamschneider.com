@@ -142,30 +142,25 @@ export default function ArcadeMachineViewer() {
 
   return (
     <div
-      className="w-1/2 h-screen"
+      className="w-full top-0 h-[calc(100%-100vh)]"
       style={{
         transition: "opacity 1s",
         opacity: fadeToWhite ? 0 : 1,
       }}
     >
-      <Canvas gl={{ antialias: true }}>
-        <Suspense fallback={null}>
-          <Scene
-            onJoystickMove={handleJoystickMove}
-            onButtonPress={handleButtonPress}
-            onDraw={handleDraw}
-            screenLightModifier={screenLightModifier}
-            isTransitioning={isTransitioning}
-          />
-        </Suspense>
-      </Canvas>
-      <div
-        className="w-full h-full bg-transparent transform -translate-y-full"
-        style={{
-          boxShadow: "#000000 0px -50px 50px 0px inset",
-          clipPath: "inset(calc(100% - 100px) 0px 0px 0px)",
-        }}
-      />
+      <div className="sticky top-0 bg-red-500 overflow-visible h-[0px] ">
+        <Canvas className="!h-screen !w-[80%]" gl={{ antialias: true }}>
+          <Suspense fallback={null}>
+            <Scene
+              onJoystickMove={handleJoystickMove}
+              onButtonPress={handleButtonPress}
+              onDraw={handleDraw}
+              screenLightModifier={screenLightModifier}
+              isTransitioning={isTransitioning}
+            />
+          </Suspense>
+        </Canvas>
+      </div>
     </div>
   );
 }

@@ -1,32 +1,29 @@
 "use client";
 
 import React, { useState } from "react";
-import { motion } from "framer-motion";
-import { AnimatedIntro } from "./components/AnimatedIntro";
-import { WorkExperience } from "./components/WorkExperience";
-import { Games } from "./components/Games";
-import ArcadeMachineViewer from "./components/arcademachine/ArcadeMachineViewer";
+import { Games } from "./components/games/Games";
+import Bento from "./components/factsbento/bento";
+import Intro from "./components/intro/intro";
+import Jobs from "./components/jobs/jobs";
+import Waves from "./components/waves/waves";
+import Projects from "./components/projects/projects";
+
 export default function Home() {
   const [loadContent, setLoadContent] = useState(true);
 
   return (
-    <div className="min-h-screen flex flex-col items-center">
-      <main className="w-full flex flex-col items-center">
-        <AnimatedIntro setLoadContent={setLoadContent} />
+    <div className="min-h-screen flex flex-col items-center ">
+      <main className="w-full flex flex-col items-center overflow-x-clip">
         {loadContent && (
           <>
-            <motion.p
-              className="text-xl text-center max-w-2xl px-4"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.2, duration: 0.8 }}
-            >
-              I'm a software engineer passionate about building elegant
-              solutions to complex problems. I specialize in full-stack web
-              development and love exploring new technologies.
-            </motion.p>
-            <WorkExperience />
+            <Intro />
+            <Jobs />
             <Games />
+            <Projects />
+            <div id="fun-facts">
+              <Bento />
+            </div>
+            <Waves />
           </>
         )}
       </main>
