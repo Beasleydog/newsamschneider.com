@@ -1,0 +1,16 @@
+// https://accounts.spotify.com/authorize?response_type=code&client_id=&scope=ugc-image-upload%20user-read-recently-played%20user-top-read%20user-read-playback-position%20user-read-playback-state%20user-modify-playback-state%20user-read-currently-playing%20app-remote-control%20playlist-modify-public%20playlist-modify-private%20playlist-read-private%20playlist-read-collaborative%20user-follow-modify%20user-follow-read%20user-library-modify%20user-library-read%20user-read-email%20user-read-private%20streaming&redirect_uri=https://samschneider.dev
+// const url = "https://accounts.spotify.com/api/token";
+//     const payload = {
+//       method: 'POST',
+//       headers: {
+//         'Content-Type': 'application/x-www-form-urlencoded',
+//            'Authorization': 'Basic ' + (btoa(clientId + ':' + CLIENT_SECRET))
+//       },
+//       body: new URLSearchParams({
+//        code: refreshToken,
+//         redirect_uri: "https://samschneider.dev",
+//         grant_type: 'authorization_code'
+//       }),
+//     }
+//     const body = await fetch(url, payload);
+//     const response = await body.json();
