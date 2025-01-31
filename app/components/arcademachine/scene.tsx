@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import * as THREE from "three";
 import { ArcadeMachineProps } from "./types/ArcadeMachineProps";
 import { PerspectiveCamera, OrbitControls } from "@react-three/drei";
@@ -10,10 +10,10 @@ function Scene({
   onButtonPress,
   onDraw,
   screenLightModifier,
-  isTransitioning,
 }: ArcadeMachineProps) {
   const orbitControlsRef = useRef<any>(null);
   const cameraRef = useRef<THREE.PerspectiveCamera>(null);
+
   const isDraggingRef = useRef(false);
   const defaultAzimuth = useRef(0.4654245644654168);
   const defaultPolar = useRef(1.5707963267948966);
@@ -85,7 +85,6 @@ function Scene({
         onButtonPress={onButtonPress}
         onDraw={onDraw}
         screenLightModifier={screenLightModifier}
-        isTransitioning={isTransitioning}
       />
       <PerspectiveCamera makeDefault ref={cameraRef} />
       <OrbitControls

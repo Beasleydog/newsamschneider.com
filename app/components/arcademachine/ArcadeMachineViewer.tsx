@@ -1,6 +1,7 @@
 "use client";
 import React, { Suspense, useEffect, useState, useRef } from "react";
 import { Canvas } from "@react-three/fiber";
+import { OrbitControls } from "@react-three/drei";
 
 import { games } from "@/app/constants/games";
 import Scene from "./scene";
@@ -13,9 +14,8 @@ export default function ArcadeMachineViewer() {
   const fontLoaded = useRef(false);
   const [glitchAmount, setGlitchAmount] = useState(0);
   const [screenLightModifier, setScreenLightModifier] = useState(0); // Start with screen off
-  const [scanLinePosition, setScanLinePosition] = useState(-1); // -1 means off, 0-100 is the position
-  const [isTransitioning, setIsTransitioning] = useState(false);
-  const [fadeToWhite, setFadeToWhite] = useState(false);
+  const orbitControlsRef = useRef(null);
+
   useEffect(() => {
     // Load font first
     const loadFont = async () => {
@@ -28,7 +28,7 @@ export default function ArcadeMachineViewer() {
     };
     loadFont();
 
-    // Existing image loading code...
+    // Load images
     const img = new Image();
     const imageUrl = new URL(location.href + "/background.png", import.meta.url)
       .href;
@@ -42,42 +42,17 @@ export default function ArcadeMachineViewer() {
       loadedImages.current[game.imageUrl] = img;
     });
 
-    // Start the animation after a delay
+    // Start with initial glitch effect
     setTimeout(() => {
-      // Animate the scan line from top to bottom
-      const startingGlitchAmount = 10;
-      const animationSteps = 100;
-      const delay = 40;
-      for (let i = 0; i <= animationSteps; i++) {
-        setTimeout(() => {
-          setScanLinePosition(i);
-          setGlitchAmount((1 - i / animationSteps) * startingGlitchAmount);
-        }, i * delay); // Each step takes 20ms (2 seconds total)
-      }
+      setGlitchAmount(10);
       setTimeout(() => {
         setGlitchAmount(0);
-      }, animationSteps * delay + 100);
-    }, 4000); // Wait 1 second before starting
+      }, 1000);
+    }, 4000);
   }, []);
 
   const handleJoystickMove = (position: number) => {
-    // If already transitioning, ignore input
-    if (isTransitioning) return;
-
-    // Check if we're on the last game and trying to go forward
-    if (currentImage === games.length - 1 && position > 0) {
-      setIsTransitioning(true);
-      // Start glitch effect and fade to white
-      setGlitchAmount(20);
-      setScreenLightModifier(2); // Increase brightness
-
-      setTimeout(() => {
-        setFadeToWhite(true);
-      }, 1500);
-      return;
-    }
-
-    // Original joystick move logic
+    // Simple cycling through games
     setGlitchAmount(20);
     setScreenLightModifier(0.5);
 
@@ -97,7 +72,9 @@ export default function ArcadeMachineViewer() {
   };
 
   const handleButtonPress = (isPressed: boolean) => {
-    console.log("Button pressed:", isPressed);
+    if (!isPressed) {
+      window.open(games[currentImage].url, "_blank");
+    }
   };
 
   const handleDraw = (
@@ -114,50 +91,23 @@ export default function ArcadeMachineViewer() {
       },
       currentImage,
       glitchAmount,
-      1,
-      isTransitioning
+      1
     );
-    // Draw scan line and black overlay
-    if (scanLinePosition < 100 && scanLinePosition >= 0) {
-      const scanY = (canvas.height * scanLinePosition) / 100;
-
-      // Black overlay covering everything below scan line
-      ctx.fillStyle = "rgba(0, 0, 0, 1)";
-      ctx.fillRect(0, scanY, canvas.width, canvas.height - scanY);
-
-      // Bright scan line
-      const gradient = ctx.createLinearGradient(0, scanY - 15, 0, scanY + 15);
-      gradient.addColorStop(0, "rgba(255, 255, 255, 0)");
-      gradient.addColorStop(0.5, "rgba(255, 255, 255, 0.95)");
-      gradient.addColorStop(1, "rgba(255, 255, 255, 0)");
-
-      ctx.fillStyle = gradient;
-      ctx.fillRect(0, scanY - 15, canvas.width, 30);
-    } else if (scanLinePosition === -1) {
-      // Before animation starts: completely black
-      ctx.fillStyle = "rgba(0, 0, 0, 1)";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-    }
   };
 
   return (
-    <div
-      className="w-full top-0 h-[calc(100%-100vh)]"
-      style={{
-        transition: "opacity 1s",
-        opacity: fadeToWhite ? 0 : 1,
-      }}
-    >
+    <div className="w-full top-0 h-[calc(100%-100vh)]">
       <div className="sticky top-0 bg-red-500 overflow-visible h-[0px] ">
-        <Canvas className="!h-screen !w-[80%]" gl={{ antialias: true }}>
+        <Canvas className="!h-screen !w-[95%]" gl={{ antialias: true }}>
           <Suspense fallback={null}>
             <Scene
               onJoystickMove={handleJoystickMove}
               onButtonPress={handleButtonPress}
               onDraw={handleDraw}
               screenLightModifier={screenLightModifier}
-              isTransitioning={isTransitioning}
+              orbitControlsRef={orbitControlsRef}
             />
+            <OrbitControls ref={orbitControlsRef} />
           </Suspense>
         </Canvas>
       </div>

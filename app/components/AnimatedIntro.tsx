@@ -97,7 +97,7 @@ export function AnimatedIntro({ setLoadContent }: AnimatedIntroProps) {
               transition={{ duration: 0.5, delay: 0.5 }}
               className="text-6xl w-14"
             >
-              I'm
+              I&apos;m
             </motion.span>
           )}
         </motion.div>

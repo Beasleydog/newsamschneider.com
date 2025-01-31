@@ -24,7 +24,7 @@ const games: Game[] = [
   {
     title: "Collaborative Blackout Poem",
     description:
-      "A tool made during COVID to help teachers create blackout poems with their students. Used in Community College of Philadelphia classrooms.",
+      "A tool made during COVID to help teachers create blackout poems with their students, powered by Socket.io. Used in Community College of Philadelphia classrooms.",
     imageUrl: "/blackOutPoem.png",
     url: "https://blackoutpoem.glitch.me/",
     oneLiner:
@@ -80,7 +80,8 @@ const games: Game[] = [
   },
   {
     title: "Collaborative Crossword",
-    description: "A collaborative crossword generator.",
+    description:
+      "A collaborative crossword generator built using Google Apps Script.",
     imageUrl: "/collaborativeCrossword.png",
     url: "https://beasleydog.github.io/collaborativecrossword",
     oneLiner:

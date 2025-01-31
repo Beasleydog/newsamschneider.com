@@ -63,7 +63,7 @@ export default function Projects() {
         {projects.map((project, index) => (
           <div
             key={index}
-            className="absolute animate-float cursor-pointer"
+            className="absolute animate-float cursor-pointer hover:rounded-2xl overflow-hidden transition-all duration-300"
             style={{
               left: project.position.left,
               top: project.position.top,

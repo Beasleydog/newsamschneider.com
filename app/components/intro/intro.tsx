@@ -1,5 +1,3 @@
-import NumberFlow from "@number-flow/react";
-import { motion } from "framer-motion";
 import React, { useState, useEffect } from "react";
 
 export default function Intro() {
@@ -13,7 +11,7 @@ export default function Intro() {
       setTranslateUp(false);
     }, cycleTime);
 
-    let secondInterval;
+    let secondInterval: ReturnType<typeof setInterval>;
     setTimeout(() => {
       secondInterval = setInterval(() => {
         setTranslateUp(true);

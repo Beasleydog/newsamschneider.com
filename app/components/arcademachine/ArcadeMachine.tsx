@@ -10,8 +10,6 @@ function ArcadeMachine({
   onJoystickMove,
   onButtonPress,
   onDraw,
-  screenLightModifier,
-  isTransitioning,
 }: ArcadeMachineProps) {
   const gltf = useGLTF("/arcademachine.glb");
   const [isPressed, setIsPressed] = useState(false);
@@ -39,11 +37,13 @@ function ArcadeMachine({
     }
     if (joystick) {
       joystickRef.current = joystick;
-      joystickParentRef.current = joystick.parent;
-      initialJoystickRotation.current =
-        joystickParentRef.current.rotation.clone();
-      initialJoystickPosition.current =
-        joystickParentRef.current.position.clone();
+      if (joystick.parent) {
+        joystickParentRef.current = joystick.parent;
+        initialJoystickRotation.current =
+          joystickParentRef.current.rotation.clone();
+        initialJoystickPosition.current =
+          joystickParentRef.current.position.clone();
+      }
     }
 
     // Find Mesh_8 and apply the canvas texture
@@ -55,11 +55,10 @@ function ArcadeMachine({
       const texture = new THREE.CanvasTexture(canvas);
       texture.minFilter = THREE.LinearFilter;
       texture.magFilter = THREE.LinearFilter;
-      const crtMaterial = new CRTMaterial({
-        map: texture,
-        time: 0,
-        resolution: new THREE.Vector2(800, 800),
-      });
+      const crtMaterial = new CRTMaterial();
+      crtMaterial.uniforms.map.value = texture;
+      crtMaterial.uniforms.time.value = 0;
+      crtMaterial.uniforms.resolution.value = new THREE.Vector2(800, 800);
       screenMesh.material = crtMaterial;
       canvasRef.current = canvas;
       canvasTextureRef.current = texture;
@@ -72,7 +71,7 @@ function ArcadeMachine({
     }
   }, [isDragging, orbitControlsRef]);
 
-  useFrame((state, delta) => {
+  useFrame((state) => {
     // Smoothly interpolate button position
     if (buttonRef.current) {
       buttonRef.current.position.y +=
@@ -83,7 +82,8 @@ function ArcadeMachine({
     if (
       !isDragging &&
       joystickParentRef.current &&
-      initialJoystickRotation.current
+      initialJoystickRotation.current &&
+      initialJoystickPosition.current
     ) {
       // Interpolate each rotation axis
       joystickParentRef.current.rotation.x +=
@@ -154,7 +154,7 @@ function ArcadeMachine({
       rotation.x = THREE.MathUtils.clamp(rotation.x, -maxRotation, maxRotation);
       rotation.y = 0;
 
-      if (rotation.x < 0) {
+      if (rotation.x < 0 && initialJoystickPosition.current) {
         joystickParentRef.current.position.y =
           initialJoystickPosition.current.y -
           Math.pow(rotation.x / maxRotation, 2) * 0.02;

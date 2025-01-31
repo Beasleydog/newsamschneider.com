@@ -1,12 +1,22 @@
 import { NextResponse } from "next/server";
-export async function GET(request: Request) {
+
+interface Project {
+  stats: {
+    views: number;
+  };
+}
+
+export const dynamic = "force-dynamic";
+
+export async function GET() {
   let totalViews = 0;
   let offset = 0;
   let hasMore = true;
 
   while (hasMore) {
     const response = await fetch(
-      `https://api.scratch.mit.edu/users/beasleydog/projects?offset=${offset}&limit=20`
+      `https://api.scratch.mit.edu/users/beasleydog/projects?offset=${offset}&limit=20`,
+      { cache: "no-store" }
     );
     const projects = await response.json();
 
@@ -14,7 +24,7 @@ export async function GET(request: Request) {
       hasMore = false;
     }
 
-    totalViews += projects.reduce((sum: number, project: any) => {
+    totalViews += projects.reduce((sum: number, project: Project) => {
       return sum + project.stats.views;
     }, 0);
 

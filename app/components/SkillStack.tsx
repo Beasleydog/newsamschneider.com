@@ -3,7 +3,10 @@ import * as Tooltip from "@radix-ui/react-tooltip";
 import { BRAND_COLORS } from "../constants/colors";
 
 interface Skill {
-  icon: React.ComponentType;
+  icon: React.ComponentType<{
+    className?: string;
+    style?: React.CSSProperties;
+  }>;
   name: keyof typeof BRAND_COLORS;
 }
 

@@ -9,7 +9,7 @@ import "./jobs.css";
 import { experiences } from "../../constants/experiences";
 import * as Tooltip from "@radix-ui/react-tooltip";
 import { BRAND_COLORS } from "../../constants/colors";
-import { script } from "../../constants/script";
+import { useWindowWidth } from "@/app/helpers/useWindowWidth";
 export const blockClass = "h-[50vh]";
 const backgroundColor = "#faf8f8";
 interface Skill {
@@ -56,6 +56,7 @@ function GraySkillStack({ skills }: { skills: Skill[] }) {
   );
 }
 export default function Jobs() {
+  const small = useWindowWidth() < 1056;
   const jobsData = experiences;
   return (
     <div
@@ -70,20 +71,34 @@ export default function Jobs() {
       }}
     >
       <div
-        className="w-full py-8 flex flex-col gap-[8rem] items-center justify-center"
+        className={`w-full py-8 flex flex-col gap-[8rem] items-center justify-center ${
+          small ? "px-4" : ""
+        }`}
         style={{
           background: `radial-gradient(circle, transparent 0%, ${backgroundColor} 100%)`,
         }}
       >
-        <DataPipeLineContainer>
-          {JobBlock(
-            jobsData[1].company,
-            jobsData[1].role,
-            jobsData[1].highlights,
-            jobsData[1].period,
-            jobsData[1].skills
-          )}
-        </DataPipeLineContainer>
+        {small ? (
+          <>
+            {JobBlock(
+              jobsData[1].company,
+              jobsData[1].role,
+              jobsData[1].highlights,
+              jobsData[1].period,
+              jobsData[1].skills
+            )}
+          </>
+        ) : (
+          <DataPipeLineContainer>
+            {JobBlock(
+              jobsData[1].company,
+              jobsData[1].role,
+              jobsData[1].highlights,
+              jobsData[1].period,
+              jobsData[1].skills
+            )}
+          </DataPipeLineContainer>
+        )}
         <div className="flex flex-row items-center justify-center gap-[6rem]">
           {JobBlock(
             jobsData[4].company,
@@ -92,10 +107,10 @@ export default function Jobs() {
             jobsData[4].period,
             jobsData[4].skills
           )}
-          <LibraryShapes />
+          {!small && <LibraryShapes />}
         </div>
         <div className="flex flex-row items-center justify-center gap-[6rem]">
-          <VMSquare />
+          {!small && <VMSquare />}
           {JobBlock(
             jobsData[3].company,
             jobsData[3].role,
@@ -105,7 +120,7 @@ export default function Jobs() {
           )}
         </div>
         <div className="flex flex-row items-center justify-center">
-          <GoldenLaw translate={15} scale={1} initialRotation={5} />
+          {!small && <GoldenLaw translate={15} scale={1} initialRotation={5} />}
           {JobBlock(
             jobsData[2].company,
             jobsData[2].role,
@@ -113,7 +128,9 @@ export default function Jobs() {
             jobsData[2].period,
             jobsData[2].skills
           )}
-          <GoldenLaw translate={-177} scale={-1} initialRotation={5} />
+          {!small && (
+            <GoldenLaw translate={-177} scale={-1} initialRotation={5} />
+          )}
         </div>
         <div className="flex flex-row items-center justify-center gap-[6rem]">
           {JobBlock(
@@ -123,7 +140,7 @@ export default function Jobs() {
             jobsData[0].period,
             jobsData[0].skills
           )}
-          <RemNoteSquare />
+          {!small && <RemNoteSquare />}
         </div>
       </div>
     </div>
@@ -197,21 +214,32 @@ function JobBlock(
   const handleClass =
     "absolute w-[10px] h-[10px] bg-[#faf8f8] border-2 border-[#b7b7b7]";
   const backgroundStyle = { background: backgroundColor };
+  const small = useWindowWidth() < 920;
   return (
     <div
       style={backgroundStyle}
-      className={`w-max z-10 relative overflow-visible flex flex-col gap-2 border-2 border-[#b7b7b7]  text-neutral-900 p-5 px-9 ${ptSerif.className}`}
+      className={`${
+        !small && "w-max"
+      } z-10 relative overflow-visible flex flex-col gap-2 border-2 border-[#b7b7b7]  text-neutral-900 p-5 px-9 ${
+        ptSerif.className
+      }`}
     >
       <h1 className="text-[3rem] font-bold tracking-tighter font-thin">
         {company}
       </h1>
-      <div className="flex flex-row items-center gap-2">
+      <div
+        className={`flex ${
+          small ? "flex-col items-start" : "flex-row items-center"
+        }  gap-2`}
+      >
         <h2 className="">{title}</h2>
-        <span className="">•</span>
+        {!small && <span className="">•</span>}
         <p>{rangeString}</p>
-        <span className="ml-4">
-          <GraySkillStack skills={skills} />
-        </span>
+        {!small && (
+          <span className="ml-4">
+            <GraySkillStack skills={skills} />
+          </span>
+        )}
       </div>
       <ul className="max-w-2xl mt-2 list-disc list-inside pl-2">
         {description.map((desc) => (
@@ -378,80 +406,24 @@ function VMSquare() {
 }
 
 function DataPipeLineContainer({ children }: { children: React.ReactNode }) {
-  const sectionLength = 100;
-  const [start, setStart] = useState(script.length);
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setStart((start) => (start - 2 < 0 ? script.length : start - 2));
-    }, 10);
-    return () => clearInterval(interval);
-  }, []);
-  const showText = script.slice(start, start + sectionLength);
   return (
-    <div className="w-full flex flex-row items-center justify-center">
-      <div className="text-xl flex-1 h-full overflow-hidden whitespace-nowrap blur-[1px] italic">
-        <div
-          className=""
-          style={{
-            background:
-              "linear-gradient(90deg, transparent 50%, rgba(23,23,23,1) 100%)",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-            height: "27px",
-          }}
-        >
-          {showText}
-        </div>
-      </div>
-      <div className="w-0 overflow-visible">
-        <div
-          style={{
-            backgroundImage: "url('/jobs/inout.png')",
-            backgroundSize: "contain",
-            backgroundPosition: "center",
-            backgroundRepeat: "no-repeat",
-            height: "90px",
-            width: "44px",
-            transform: "translate(-100%, -50%)",
-            position: "absolute",
-          }}
-        />
-      </div>
-      <div className="w-max">{children}</div>
-      <div className="w-0 overflow-visible">
-        <div
-          style={{
-            backgroundImage: "url('/jobs/inout.png')",
-            backgroundSize: "contain",
-            backgroundPosition: "center",
-            backgroundRepeat: "no-repeat",
-            height: "90px",
-            width: "44px",
-            transform: "translateY(-50%) scaleX(-1)",
-            position: "absolute",
-            zIndex: 20,
-          }}
-        />
-      </div>
-      <div className="flex-1  h-full overflow-hidden whitespace-nowrap">
-        <motion.div
-          className="text-[4.5rem]"
-          initial={{ x: "0%", opacity: 0 }}
-          whileInView={{
-            x: ["-10%", "30%"],
-            opacity: [1, 0],
-            transition: {
-              duration: 2,
-              repeat: Infinity,
-              ease: "linear",
-              repeatDelay: 1,
-              delay: 2,
-            },
-          }}
-        >
-          📦
-        </motion.div>
-      </div>
+    <div className="relative inline-block">
+      <motion.img
+        src="/jobs/gear.png"
+        alt="Rotating Gear"
+        className="absolute left-[-3rem] top-[calc(50%-4rem)] z-0 w-[9rem] h-[9rem]"
+        animate={{ rotate: 360 }}
+        transition={{ repeat: Infinity, duration: 4, ease: "linear" }}
+      />
+
+      {children}
+      <motion.img
+        src="/jobs/gear.png"
+        alt="Rotating Gear"
+        className="absolute right-[-3rem] top-[calc(50%-4rem)] z-0 w-[9rem] h-[9rem]"
+        animate={{ rotate: 360 }}
+        transition={{ repeat: Infinity, duration: 4, ease: "linear" }}
+      />
     </div>
   );
 }

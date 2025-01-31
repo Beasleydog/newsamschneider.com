@@ -28,10 +28,14 @@ export default function Seconds() {
       style={{
         height: `${size - gap / 2}px`,
         width: `${size}px`,
+        backgroundImage: "url(/clock.webp)",
+        backgroundSize: "70%",
+        backgroundPosition: "center 220%",
+        backgroundRepeat: "no-repeat",
       }}
     >
-      <div className="flex flex-col items-center justify-center h-full">
-        <span className="text-[1.5rem] leading-[2.2rem] font-bold text-[#653144]">
+      <div className="flex flex-col items-center h-full">
+        <span className="text-[1.5rem] leading-[1.5rem] font-bold text-[#653144] mt-1">
           i'm
         </span>
         <span className="text-[1.8rem] leading-[1.5rem] font-bold text-[#492331]">

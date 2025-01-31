@@ -47,3 +47,30 @@
     filter: drop-shadow(0 0 4px white);
   }
 }
+
+/* Additional styles for animated background */
+.animated-bg {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: linear-gradient(45deg, rgba(20, 20, 20, 0.2), rgba(0, 0, 0, 0.2));
+  background-size: 400% 400%;
+  z-index: 0;
+  pointer-events: none;
+  animation: bgShift 20s ease infinite;
+  opacity: 0.6;
+}
+
+@keyframes bgShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}

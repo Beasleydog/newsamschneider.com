@@ -6,6 +6,9 @@ const CLIENT_ID = process.env.CLIENT_ID;
 const CLIENT_SECRET = process.env.CLIENT_SECRET;
 const REFRESH_TOKEN = process.env.REFRESH_TOKEN;
 console.log(CLIENT_ID, CLIENT_SECRET, REFRESH_TOKEN);
+
+export const dynamic = "force-dynamic"; // Force dynamic fetch
+
 const getAccessToken = async () => {
   const response = await fetch("https://accounts.spotify.com/api/token", {
     method: "POST",
@@ -17,14 +20,14 @@ const getAccessToken = async () => {
     },
     body: new URLSearchParams({
       grant_type: "refresh_token",
-      refresh_token: REFRESH_TOKEN,
-    }),
+      refresh_token: REFRESH_TOKEN ?? "",
+    }).toString(),
   });
   const data = (await response.json()) as { access_token: string };
   return data.access_token;
 };
 
-export async function GET(request: Request) {
+export async function GET() {
   try {
     const accessToken = await getAccessToken();
     const response = await fetch(
