@@ -53,6 +53,7 @@ export default function Scratch() {
           width: `${size * 0.6}px`,
         }}
       />
+      <></>
     </div>
   );
 }
