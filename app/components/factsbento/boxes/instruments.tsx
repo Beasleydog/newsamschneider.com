@@ -7,7 +7,7 @@ export default function Instruments() {
       style={{
         height: `${size - gap / 2}px`,
         width: `${size - gap}px`,
-        backgroundImage: `url('/instruments.png')`,
+        backgroundImage: `url('/Instruments.png')`,
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",

@@ -103,7 +103,7 @@ export default function Button() {
           onMouseLeave={() => setIsPressed(false)}
           disabled={isLoading}
           style={{
-            backgroundImage: `url(${"buttonFace.svg"})`,
+            backgroundImage: `url(${"buttonface.svg"})`,
             backgroundSize: "40%",
             backgroundPosition: "center",
             backgroundRepeat: "no-repeat",
