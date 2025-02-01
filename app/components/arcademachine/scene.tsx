@@ -1,9 +1,10 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
+// import { useState } from "react";
 import * as THREE from "three";
 import { ArcadeMachineProps } from "./types/ArcadeMachineProps";
-import { PerspectiveCamera, OrbitControls } from "@react-three/drei";
+// import { PerspectiveCamera, OrbitControls } from "@react-three/drei";
 import ArcadeMachine from "./ArcadeMachine";
-import { useFrame } from "@react-three/fiber";
+// import { useFrame } from "@react-three/fiber";
 
 function Scene({
   onJoystickMove,
@@ -14,12 +15,12 @@ function Scene({
 }: ArcadeMachineProps) {
   const orbitControlsRef = useRef<any>(null);
   const cameraRef = useRef<THREE.PerspectiveCamera>(null);
-  const isDraggingRef = useRef(false);
-  const defaultAzimuth = useRef(0.4654245644654168);
-  const defaultPolar = useRef(1.5707963267948966);
-  const offsetDistance = useRef(0.2);
+  // const isDraggingRef = useRef(false);
+  // const defaultAzimuth = useRef(0.4654245644654168);
+  // const defaultPolar = useRef(1.5707963267948966);
+  // const offsetDistance = useRef(0.2);
 
-  const springConstant = 0.2;
+  // const springConstant = 0.2;
   // useFrame(() => {
   //   if (orbitControlsRef.current) {
   //     if (isDraggingRef.current) return;
