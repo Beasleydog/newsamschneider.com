@@ -10,7 +10,7 @@ import { drawCanvas } from "./canvasUtils";
 export default function ArcadeMachineViewer() {
   const [currentImage, setCurrentImage] = useState(0);
   const loadedImages = useRef<{ [key: string]: HTMLImageElement }>({});
-  const backgroundImage = useRef<HTMLImageElement>();
+  const backgroundImage = useRef<HTMLImageElement>(undefined);
   const fontLoaded = useRef(false);
   const [glitchAmount, setGlitchAmount] = useState(0);
   const [screenLightModifier, setScreenLightModifier] = useState(0); // Start with screen off
@@ -98,7 +98,11 @@ export default function ArcadeMachineViewer() {
   return (
     <div className="w-full top-0 h-[calc(100%-100vh)]">
       <div className="sticky top-0 bg-red-500 overflow-visible h-[0px] ">
-        <Canvas className="!h-screen !w-[95%]" gl={{ antialias: true }}>
+        <Canvas
+          className="!h-screen !w-[95%]"
+          gl={{ antialias: true }}
+          camera={{ position: [0, 2, 5], fov: 50 }}
+        >
           <Suspense fallback={null}>
             <Scene
               onJoystickMove={handleJoystickMove}
@@ -107,7 +111,18 @@ export default function ArcadeMachineViewer() {
               screenLightModifier={screenLightModifier}
               orbitControlsRef={orbitControlsRef}
             />
-            <OrbitControls ref={orbitControlsRef} />
+            <OrbitControls
+              ref={orbitControlsRef}
+              minPolarAngle={Math.PI / 2 - 0.1}
+              maxPolarAngle={Math.PI / 2 + 0.1}
+              minAzimuthAngle={-Math.PI / 4}
+              maxAzimuthAngle={Math.PI / 4}
+              enableZoom={false}
+              enablePan={false}
+              target={[0, 1, 0]}
+              enableDamping={true}
+              dampingFactor={0.05}
+            />
           </Suspense>
         </Canvas>
       </div>

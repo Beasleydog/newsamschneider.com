@@ -208,8 +208,8 @@ function ArcadeMachine({
   return (
     <primitive
       object={gltf.scene}
-      scale={0.5}
-      position={[0, 0, 0]}
+      scale={1.8}
+      position={[0, -2, 0]}
       onPointerDown={handlePointerDown}
       onPointerUp={handlePointerUp}
       onPointerMove={handlePointerMove}

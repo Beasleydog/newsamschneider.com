@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { ArcadeMachineProps } from "./types/ArcadeMachineProps";
 import { PerspectiveCamera, OrbitControls } from "@react-three/drei";
@@ -10,32 +10,32 @@ function Scene({
   onButtonPress,
   onDraw,
   screenLightModifier,
+  isTransitioning,
 }: ArcadeMachineProps) {
   const orbitControlsRef = useRef<any>(null);
   const cameraRef = useRef<THREE.PerspectiveCamera>(null);
-
   const isDraggingRef = useRef(false);
   const defaultAzimuth = useRef(0.4654245644654168);
   const defaultPolar = useRef(1.5707963267948966);
   const offsetDistance = useRef(0.2);
 
   const springConstant = 0.2;
-  useFrame(() => {
-    if (orbitControlsRef.current) {
-      if (isDraggingRef.current) return;
-      const controls = orbitControlsRef.current;
-      const azimuth = controls.getAzimuthalAngle();
-      const polar = controls.getPolarAngle();
-      const azDistance = defaultAzimuth.current - azimuth;
-      const polarDistance = defaultPolar.current - polar;
-      if (Math.abs(azDistance) > 0.01)
-        controls.setAzimuthalAngle(azimuth + azDistance * springConstant);
-      if (Math.abs(polarDistance) > 0.01)
-        controls.setPolarAngle(polar + polarDistance * springConstant);
+  // useFrame(() => {
+  //   if (orbitControlsRef.current) {
+  //     if (isDraggingRef.current) return;
+  //     const controls = orbitControlsRef.current;
+  //     const azimuth = controls.getAzimuthalAngle();
+  //     const polar = controls.getPolarAngle();
+  //     const azDistance = defaultAzimuth.current - azimuth;
+  //     const polarDistance = defaultPolar.current - polar;
+  //     if (Math.abs(azDistance) > 0.01)
+  //       controls.setAzimuthalAngle(azimuth + azDistance * springConstant);
+  //     if (Math.abs(polarDistance) > 0.01)
+  //       controls.setPolarAngle(polar + polarDistance * springConstant);
 
-      controls.update();
-    }
-  });
+  //     controls.update();
+  //   }
+  // });
 
   useEffect(() => {
     setTimeout(() => {
@@ -48,9 +48,9 @@ function Scene({
   return (
     <>
       <ambientLight intensity={0.01} />
-      <ambientLight intensity={0.01} />
+      <ambientLight intensity={1} position={[0, 10, 0]} />
       <spotLight
-        position={[0, 1, 1]}
+        position={[0, 2, 2.5]}
         intensity={4}
         angle={Math.PI}
         penumbra={0}
@@ -85,29 +85,31 @@ function Scene({
         onButtonPress={onButtonPress}
         onDraw={onDraw}
         screenLightModifier={screenLightModifier}
+        isTransitioning={isTransitioning}
       />
-      <PerspectiveCamera makeDefault ref={cameraRef} />
+      {/* <PerspectiveCamera makeDefault ref={cameraRef} /> */}
+      {/* 
       <OrbitControls
         ref={orbitControlsRef}
-        // makeDefault
-        enabled={true}
-        enableZoom={false}
-        enablePan={false}
-        enableRotate={true}
-        minAzimuthAngle={defaultAzimuth.current - offsetDistance.current}
-        maxAzimuthAngle={defaultAzimuth.current + offsetDistance.current}
-        minPolarAngle={defaultPolar.current - offsetDistance.current}
-        maxPolarAngle={defaultPolar.current + offsetDistance.current}
+        makeDefault
+        enabled={false}
+        // enableZoom={false}
+        // enablePan={false}
+        // enableRotate={true}
+        // minAzimuthAngle={defaultAzimuth.current - offsetDistance.current}
+        // maxAzimuthAngle={defaultAzimuth.current + offsetDistance.current}
+        // minPolarAngle={defaultPolar.current - offsetDistance.current}
+        // maxPolarAngle={defaultPolar.current + offsetDistance.current}
         target={new THREE.Vector3(0, 0.8, 0)}
-        onStart={() => {
-          isDraggingRef.current = true;
-          console.log("start");
-        }}
-        onEnd={() => {
-          isDraggingRef.current = false;
-          console.log("end");
-        }}
-      />
+        // onStart={() => {
+        //   isDraggingRef.current = true;
+        //   console.log("start");
+        // }}
+        // onEnd={() => {
+        //   isDraggingRef.current = false;
+        //   console.log("end");
+        // }}
+      /> */}
     </>
   );
 }
