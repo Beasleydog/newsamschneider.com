@@ -1,13 +1,10 @@
-import { Jersey_15 } from "next/font/google";
 import { PT_Serif } from "next/font/google";
 import { Rammetto_One } from "next/font/google";
 import { Luckiest_Guy } from "next/font/google";
 import localFont from "next/font/local";
 
-const jersey15 = Jersey_15({
-  subsets: ["latin"],
-  display: "swap",
-  weight: "400",
+const jersey15 = localFont({
+  src: "./fonts/Jersey15.ttf",
 });
 
 const ptSerif = PT_Serif({
