@@ -26,7 +26,7 @@ const luckiestGuy = Luckiest_Guy({
 });
 
 const berlinSansFBDemi = localFont({
-  src: "../public/BRLNSDB.ttf",
+  src: "./fonts/BRLNSDB.ttf",
 });
 
 export { jersey15, ptSerif, rammettoOne, luckiestGuy, berlinSansFBDemi };
