@@ -26,16 +26,17 @@ export default function Nav() {
       </div>
       <div
         className="hover:text-black/70 cursor-pointer"
-        onClick={() => ScrollToId("projects")}
-      >
-        PROJECTS
-      </div>
-      <div
-        className="hover:text-black/70 cursor-pointer"
         onClick={() => ScrollToId("games")}
       >
         GAMES
       </div>
+      <div
+        className="hover:text-black/70 cursor-pointer"
+        onClick={() => ScrollToId("projects")}
+      >
+        PROJECTS
+      </div>
+      
       {!small && (
         <div
           className="hover:text-black/70 cursor-pointer"
