@@ -14,6 +14,9 @@ import {
   SiAnthropic,
   SiGooglegemini,
   SiGooglecloud,
+  SiPython,
+  SiTensorflow,
+  SiPytorch,
 } from "react-icons/si";
 import { TbApi } from "react-icons/tb";
 import { FaFileContract, FaFileCode, FaGoogleDrive } from "react-icons/fa";
@@ -22,7 +25,7 @@ import { BRAND_COLORS } from "./colors";
 
 export interface Experience {
   company: string;
-  type: "internship" | "freelance" | "volunteer";
+  type: "internship" | "freelance" | "volunteer" | "member";
   role: string;
   period: string;
   highlights: string[];
@@ -125,6 +128,22 @@ export const experiences: Experience[] = [
       { icon: TbApi, name: "PolarisLibrary API" },
       { icon: SiTailwindcss, name: "Tailwind" },
       { icon: SiLooker, name: "Looker Studio" },
+    ],
+  },
+  {
+    company: "UM CLAWS",
+    type: "member",
+    role: "AI Team Member",
+    period: "September 2024 - Present",
+    highlights: [
+      "Design and implement AI agent with function calling reaching speeds 2x of langchain",
+      "Finetune and compare Qwen2.5 0.5b, SmolLM2-360M, and FlanT5-large for quick, local agent output",
+    ],
+    skills: [
+      { icon: SiPython, name: "Python" },
+      { icon: SiTensorflow, name: "TensorFlow" },
+      { icon: SiPytorch, name: "PyTorch" },
+      { icon: SiOpenai, name: "OpenAI" },
     ],
   },
 ];
