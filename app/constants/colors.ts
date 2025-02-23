@@ -26,4 +26,6 @@ export const BRAND_COLORS = {
   Anthropic: "#d97757",
   Gemini: "#184fa7",
   "Looker Studio": "#4285F4",
+  TensorFlow: "#FF6F00",
+  PyTorch: "#EE4C2C",
 } as const;
