@@ -1,5 +1,6 @@
 import { Libre_Baskerville, Press_Start_2P, PT_Serif } from "next/font/google";
 import "./globals.css";
+import VisitTracker from "./components/VisitTracker";
 
 const pressStart2P = Press_Start_2P({
   weight: "400",
@@ -38,6 +39,7 @@ export default function RootLayout({
       className={`${libreBaskerville.variable} ${pressStart2P.variable} ${ptSerif.variable}`}
     >
       <body>{children}</body>
+      <VisitTracker />
     </html>
   );
 }
