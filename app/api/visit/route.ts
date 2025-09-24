@@ -28,7 +28,7 @@ async function postToDiscord(content: string) {
       // Avoid Next cached fetch behavior for webhooks
       cache: "no-store",
     });
-  } catch (error) {
+  } catch {
     // Silently ignore to avoid impacting user experience
   }
 }
@@ -56,7 +56,7 @@ export async function POST(req: Request) {
     }
 
     return NextResponse.json({ ok: true });
-  } catch (e) {
+  } catch {
     return NextResponse.json({ ok: false }, { status: 400 });
   }
 }
