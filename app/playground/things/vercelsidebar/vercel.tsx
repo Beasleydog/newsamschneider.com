@@ -1,51 +1,57 @@
 "use client";
 
+import { Tweet } from "react-tweet";
+import { ptSerif } from "../../../fonts";
 import "./vercel.css";
 export default function VercelSidebar() {
+  const navLinks = [
+    { label: "Home", href: "/" },
+    { label: "Experience", href: "/#career" },
+    { label: "Games", href: "/#games" },
+    { label: "Projects", href: "/#projects" },
+    { label: "Fun Facts", href: "/#fun-facts" },
+  ];
+
   return (
     <div className="cont">
-      <aside className="sidebar">
+      <div className="sidebar">
         <div className="sidebar-header">
-          <span className="sidebar-badge">Preview</span>
-          <h2>Edge Deployments</h2>
-          <p>
-            Monitor rollouts, health, and performance across every environment
-            at a glance.
-          </p>
+          <h2>Dashboard</h2>
         </div>
-
-        <div className="sidebar-section">
-          <h3>Active Project</h3>
-          <div className="sidebar-card">
-            <div>
-              <p className="sidebar-title">newsamschneider.com</p>
-              <p className="sidebar-subtitle">Main · updated 2m ago</p>
-            </div>
-            <span className="sidebar-status">Live</span>
-          </div>
-        </div>
-
-        <div className="sidebar-section">
-          <h3>Quick Links</h3>
-          <ul className="sidebar-actions">
-            <li>View deployment logs</li>
-            <li>Promote to production</li>
-            <li>Manage environment variables</li>
+        <nav className="sidebar-nav">
+          <ul>
+            {navLinks.map(({ label, href }) => (
+              <li key={href}>
+                <a href={href}>{label}</a>
+              </li>
+            ))}
           </ul>
-        </div>
-
+        </nav>
         <div className="sidebar-footer">
-          <div>
-            <p className="sidebar-usage-label">Build minutes</p>
-            <p className="sidebar-usage-value">65% of monthly quota</p>
+          <div className="user-profile">
+            <div className="avatar">SS</div>
+            <a
+              href="https://github.com/Beasleydog"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Sam Schneider
+            </a>
           </div>
-          <button type="button" className="sidebar-button">
-            New Deployment
-          </button>
         </div>
-      </aside>
-      <div className="content">
+      </div>
+      <div className="content light">
         <input type="checkbox" className="toggle"></input>
+        {/* <div className="text-2xl" style={ptSerif.style}>
+          this was cool so i remade it
+        </div> */}
+        <a
+          href="https://twitter.com/iamsahaj_xyz/status/1976334761569534024"
+          target="_blank"
+          className="w-full flex justify-center"
+        >
+          <Tweet id="1976334761569534024" />
+        </a>
       </div>
     </div>
   );
