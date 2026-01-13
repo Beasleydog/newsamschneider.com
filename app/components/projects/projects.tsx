@@ -4,57 +4,98 @@ import helper from "../../../public/projects/helper.png";
 import image from "../../../public/projects/image.png";
 import lights from "../../../public/projects/lights.png";
 import udpl from "../../../public/projects/udpl.png";
+import elonvector from "../../../public/projects/elonvector.png";
+import autostreamerclip from "../../../public/projects/autostreamerclip.png";
 
 export default function Projects() {
+  const BASE_TOP_VW = 10;
   const projects = [
     {
+      image: elonvector,
+      position: { left: "2%", topOffset: -12, width: "45vw" },
+      title: "Elon Vector",
+      titleAlign: "right" as const,
+      link: "https://huggingface.co/spaces/beasleydogai/elonfeature",
+      animationDelay: 3,
+      zIndex: 27,
+      rotation: "2" as const,
+    },
+    {
+      image: autostreamerclip,
+      position: { left: "62%", topOffset: 0, width: "50vw" },
+      title: "Auto Streamer Clip",
+      titleAlign: "left" as const,
+      link: "https://github.com/Beasleydog/autostreamerclip",
+      animationDelay: 3.5,
+      zIndex: 26,
+      rotation: "-2" as const,
+    },
+    {
       image: image,
-      position: { left: "5%", top: "10vw", width: "45vw" },
+      position: { left: "10%", topOffset: 20, width: "45vw" },
       title: "Magic Image Editor",
       titleAlign: "right" as const,
       link: "https://github.com/Beasleydog/imageeditor",
+      animationDelay: 0,
+      zIndex: 20,
+      rotation: "2" as const,
     },
     {
       image: dining,
-      position: { left: "65%", top: "25vw", width: "40vw" },
+      position: { left: "65%", topOffset: 35, width: "40vw" },
       title: "MDining Stats",
       titleAlign: "left" as const,
       link: "https://github.com/Beasleydog/diningstats",
+      animationDelay: 0.5,
+      zIndex: 21,
+      rotation: "-2" as const,
     },
     {
       image: lights,
-      position: { left: "-10%", top: "47.5vw", width: "45vw" },
+      position: { left: "-10%", topOffset: 57.5, width: "45vw" },
       title: "Holiday Lights",
       titleAlign: "right" as const,
       link: "https://github.com/Beasleydog/christmaslights",
+      animationDelay: 1,
+      zIndex: 22,
+      rotation: "2" as const,
     },
     {
       image: customTab,
-      position: { left: "45%", top: "55vw", width: "42vw" },
+      position: { left: "45%", topOffset: 65, width: "42vw" },
       title: "CustomTab Extension",
       titleAlign: "left" as const,
       link: "https://github.com/Beasleydog/customTab",
+      animationDelay: 1.5,
+      zIndex: 23,
+      rotation: "-2" as const,
     },
     {
       image: helper,
-      position: { left: "5%", top: "80vw", width: "43vw" },
+      position: { left: "5%", topOffset: 90, width: "43vw" },
       title: "AI Helper",
       titleAlign: "right" as const,
       link: "https://github.com/Beasleydog/aiHelper",
+      animationDelay: 2,
+      zIndex: 24,
+      rotation: "2" as const,
     },
     {
       image: udpl,
-      position: { left: "55%", top: "85vw", width: "50vw" },
+      position: { left: "55%", topOffset: 95, width: "50vw" },
       title: "UDPL Books",
       titleAlign: "left" as const,
       link: "https://www.udplbooks.org/",
+      animationDelay: 2.5,
+      zIndex: 25,
+      rotation: "-2" as const,
     },
   ];
 
   return (
     <div
       id="projects"
-      className="w-full h-[120vw] overflow-hidden relative mt-24"
+      className="w-full h-[140vw] overflow-hidden relative mt-24"
     >
       <div className="w-full h-full absolute top-0 bg-gradient-to-b from-[#faf8f8] to-transparent z-10"></div>
 
@@ -66,9 +107,9 @@ export default function Projects() {
             className="absolute animate-float cursor-pointer hover:rounded-2xl overflow-hidden transition-all duration-300"
             style={{
               left: project.position.left,
-              top: project.position.top,
-              animationDelay: `${index * 0.5}s`,
-              zIndex: 20 + index,
+              top: `${BASE_TOP_VW + project.position.topOffset}vw`,
+              animationDelay: `${project.animationDelay}s`,
+              zIndex: project.zIndex,
             }}
             onClick={() => window.open(project.link, "_blank")}
           >
@@ -76,9 +117,7 @@ export default function Projects() {
               <img
                 src={project.image.src}
                 alt={`project-${index}`}
-                className={`h-auto transform rotate-${
-                  index % 2 === 0 ? "2" : "-2"
-                } transition-all duration-300 hover:rounded-2xl`}
+                className={`h-auto transform rotate-${project.rotation} transition-all duration-300 hover:rounded-2xl`}
                 style={{
                   width: project.position.width,
                 }}
