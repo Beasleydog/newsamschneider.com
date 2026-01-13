@@ -1,7 +1,7 @@
 "use client";
 
 import { Tweet } from "react-tweet";
-import { ptSerif } from "../../../fonts";
+// import { ptSerif } from "../../../fonts";
 import "./vercel.css";
 export default function VercelSidebar() {
   const navLinks = [
