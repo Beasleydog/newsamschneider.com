@@ -68,6 +68,16 @@ export default function GymPage() {
   // Sort people by total count (global ranking)
   const sorted = [...data.people].sort((a, b) => b.days.length - a.days.length);
 
+  // Get unique counts in descending order for medal assignment
+  const uniqueCounts = Array.from(new Set(sorted.map(p => p.days.length))).sort((a, b) => b - a);
+  const getMedal = (count: number): string => {
+    const rank = uniqueCounts.indexOf(count);
+    if (rank === 0) return "🥇";
+    if (rank === 1) return "🥈";
+    if (rank === 2) return "🥉";
+    return `${rank + 1}.`;
+  };
+
   return (
     <div className="page">
       <h1>Family Gym Tracker</h1>
@@ -75,9 +85,9 @@ export default function GymPage() {
       {/* Global Leaderboard */}
       <div className="section-label">All Time</div>
       <div className="leaderboard">
-        {sorted.map((person, i) => (
+        {sorted.map((person) => (
           <div key={person.name} className="leader">
-            <span className="rank">{i === 0 ? "🥇" : i === 1 ? "🥈" : i === 2 ? "🥉" : `${i + 1}.`}</span>
+            <span className="rank">{getMedal(person.days.length)}</span>
             <span className="name" style={{ color: PERSON_COLORS[person.name] }}>
               {person.name}
             </span>
@@ -127,6 +137,16 @@ function MonthCalendar({
     .filter(([, count]) => count > 0)
     .sort((a, b) => b[1] - a[1]);
 
+  // Get unique counts for this month's medals
+  const monthlyUniqueCounts = Array.from(new Set(monthlyRanking.map(([, count]) => count))).sort((a, b) => b - a);
+  const getMonthlyMedal = (count: number): string => {
+    const rank = monthlyUniqueCounts.indexOf(count);
+    if (rank === 0) return "🥇";
+    if (rank === 1) return "🥈";
+    if (rank === 2) return "🥉";
+    return `${rank + 1}.`;
+  };
+
   const firstDay = new Date(year, monthNum - 1, 1);
   const lastDay = new Date(year, monthNum, 0);
   const startPadding = firstDay.getDay();
@@ -167,10 +187,10 @@ function MonthCalendar({
       <div className="month-header">
         <h2>{monthName}</h2>
         <div className="monthly-ranking">
-          {monthlyRanking.map(([name, count], i) => (
+          {monthlyRanking.map(([name, count]) => (
             <span key={name} className="monthly-person">
               <span className="monthly-rank">
-                {i === 0 ? "🥇" : i === 1 ? "🥈" : i === 2 ? "🥉" : `${i + 1}.`}
+                {getMonthlyMedal(count)}
               </span>
               <span style={{ color: PERSON_COLORS[name] }}>{name}</span>
               <span className="monthly-count">{count}</span>
