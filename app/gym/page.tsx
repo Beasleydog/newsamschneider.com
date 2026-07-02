@@ -371,4 +371,47 @@ const styles = `
     font-size: 12px;
     font-weight: 600;
   }
+
+  @media (max-width: 640px) {
+    .page {
+      padding: 24px 12px;
+    }
+
+    h1 {
+      font-size: 24px;
+    }
+
+    .leaderboard {
+      gap: 16px 20px;
+      margin-bottom: 32px;
+    }
+
+    .month {
+      margin-bottom: 40px;
+    }
+
+    .weekday {
+      font-size: 10px;
+      padding: 6px 0;
+    }
+
+    .day {
+      min-height: 56px;
+      padding: 4px;
+    }
+
+    .day-num {
+      font-size: 12px;
+    }
+
+    .names {
+      margin-top: 3px;
+      gap: 1px;
+    }
+
+    .person {
+      font-size: 9px;
+      line-height: 1.15;
+    }
+  }
 `;

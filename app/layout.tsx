@@ -28,6 +28,12 @@ export const metadata = {
   description: "Personal website of Sam Schneider",
 };
 
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+};
+
 export default function RootLayout({
   children,
 }: {

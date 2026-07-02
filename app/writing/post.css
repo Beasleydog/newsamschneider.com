@@ -14,7 +14,8 @@
 .post-title {
   font-size: 2rem;
   font-weight: bold;
-  width: 800px;
+  width: 100%;
+  max-width: 800px;
   text-align: left;
   margin-bottom: 60px;
 }
@@ -22,10 +23,28 @@
 .post-content {
   font-size: 1.2rem;
   line-height: 1.5;
-  width: 800px;
+  width: 100%;
+  max-width: 800px;
   display: flex;
   flex-direction: column;
   gap: 80px;
+}
+
+@media (max-width: 640px) {
+  .post-container {
+    padding: 20px;
+    padding-top: 90px;
+  }
+
+  .post-title {
+    font-size: 1.6rem;
+    margin-bottom: 40px;
+  }
+
+  .post-content {
+    font-size: 1.05rem;
+    gap: 56px;
+  }
 }
 
 .__Latex__ {
@@ -35,4 +54,5 @@
   display: block;
   color: rgb(43, 42, 42);
   margin-bottom: 20px;
+  overflow-x: auto;
 }

@@ -10,9 +10,13 @@ export default function Waves() {
   const small = useWindowWidth() < 768;
 
   return (
-    <div className="w-[3000px] h-screen overflow-hidden relative pt-24 left-0">
-      <div className="h-full absolute top-0 bg-gradient-to-b from-[#faf8f8] to-transparent z-10 w-full w-[3000px]"></div>
-      <div className="h-full absolute top-0 bg-gradient-to-b from-[transparent] to-[#00000085] z-10 w-full w-[3000px]"></div>
+    <div
+      className={`w-full max-w-[3000px] overflow-hidden relative left-0 ${
+        small ? "h-[55vh] pt-12" : "h-screen pt-24"
+      }`}
+    >
+      <div className="h-full absolute top-0 bg-gradient-to-b from-[#faf8f8] to-transparent z-10 w-full"></div>
+      <div className="h-full absolute top-0 bg-gradient-to-b from-[transparent] to-[#00000085] z-10 w-full"></div>
 
       <motion.div
         ref={ref}
@@ -63,6 +67,7 @@ export default function Waves() {
         autoPlay
         loop
         muted
+        playsInline
         className="absolute left-1/2 -translate-x-1/2 bottom-[-300px] z-0 blur-sm min-w-[3000px] w-[3000px] object-cover"
       />
     </div>

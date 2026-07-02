@@ -6,8 +6,10 @@ import lights from "../../../public/projects/lights.png";
 import udpl from "../../../public/projects/udpl.png";
 import elonvector from "../../../public/projects/elonvector.png";
 import autostreamerclip from "../../../public/projects/autostreamerclip.png";
+import { useWindowWidth } from "@/app/helpers/useWindowWidth";
 
 export default function Projects() {
+  const small = useWindowWidth() < 768;
   const BASE_TOP_VW = 10;
   const projects = [
     {
@@ -91,6 +93,46 @@ export default function Projects() {
       rotation: "-2" as const,
     },
   ];
+
+  if (small) {
+    return (
+      <div
+        id="projects"
+        className="w-full overflow-hidden relative mt-24 px-[5vw] pb-[10vw]"
+      >
+        <div className="flex flex-col gap-[8vw]">
+          {projects.map((project, index) => (
+            <div
+              key={index}
+              className="animate-float cursor-pointer overflow-hidden rounded-2xl"
+              style={{
+                animationDelay: `${project.animationDelay}s`,
+              }}
+              onClick={() => window.open(project.link, "_blank")}
+            >
+              <div className="relative shadow-sm rounded-2xl overflow-hidden">
+                <img
+                  src={project.image.src}
+                  alt={`project-${index}`}
+                  className="h-auto w-full"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent">
+                  <div className="absolute bottom-0 left-0 right-0 p-[4vw] text-white">
+                    <h3 className="text-[5vw] font-bold leading-tight">
+                      {project.title}
+                    </h3>
+                    <p className="text-[3vw] text-gray-300 break-all">
+                      {project.link}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div

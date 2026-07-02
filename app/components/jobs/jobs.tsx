@@ -71,34 +71,21 @@ export default function Jobs() {
       }}
     >
       <div
-        className={`w-full py-8 flex flex-col gap-[8rem] items-center justify-center ${
-          small ? "px-4" : ""
+        className={`w-full py-8 flex flex-col items-center justify-center ${
+          small ? "px-4 gap-[3rem]" : "gap-[8rem]"
         }`}
         style={{
           background: `radial-gradient(circle, transparent 0%, ${backgroundColor} 100%)`,
         }}
       >
-        {/* <div className="flex flex-row items-center justify-center gap-[6rem]">
-          {JobBlock(
-            jobsData[5].company,
-            jobsData[5].role,
-            jobsData[5].highlights,
-            jobsData[5].period,
-            jobsData[5].skills
-          )}
-
-          {!small && <Claw />}
-        </div> */}
         {small ? (
-          <>
-            {JobBlock(
-              jobsData[1].company,
-              jobsData[1].role,
-              jobsData[1].highlights,
-              jobsData[1].period,
-              jobsData[1].skills
-            )}
-          </>
+          JobBlock(
+            jobsData[1].company,
+            jobsData[1].role,
+            jobsData[1].highlights,
+            jobsData[1].period,
+            jobsData[1].skills
+          )
         ) : (
           <DataPipeLineContainer>
             {JobBlock(
@@ -110,7 +97,11 @@ export default function Jobs() {
             )}
           </DataPipeLineContainer>
         )}
-        <div className="flex flex-row items-center justify-center gap-[6rem]">
+        <div
+          className={`flex items-center justify-center ${
+            small ? "w-full" : "flex-row gap-[6rem]"
+          }`}
+        >
           {JobBlock(
             jobsData[4].company,
             jobsData[4].role,
@@ -120,7 +111,11 @@ export default function Jobs() {
           )}
           {!small && <LibraryShapes />}
         </div>
-        <div className="flex flex-row items-center justify-center gap-[6rem]">
+        <div
+          className={`flex items-center justify-center ${
+            small ? "w-full" : "flex-row gap-[6rem]"
+          }`}
+        >
           {!small && <VMSquare />}
           {JobBlock(
             jobsData[3].company,
@@ -130,7 +125,11 @@ export default function Jobs() {
             jobsData[3].skills
           )}
         </div>
-        <div className="flex flex-row items-center justify-center">
+        <div
+          className={`flex items-center justify-center ${
+            small ? "w-full" : "flex-row"
+          }`}
+        >
           {!small && <GoldenLaw translate={15} scale={1} initialRotation={5} />}
           {JobBlock(
             jobsData[2].company,
@@ -143,7 +142,11 @@ export default function Jobs() {
             <GoldenLaw translate={-177} scale={-1} initialRotation={5} />
           )}
         </div>
-        <div className="flex flex-row items-center justify-center gap-[6rem]">
+        <div
+          className={`flex items-center justify-center ${
+            small ? "w-full" : "flex-row gap-[6rem]"
+          }`}
+        >
           {JobBlock(
             jobsData[0].company,
             jobsData[0].role,
@@ -255,19 +258,25 @@ function JobBlock(
   skills: Skill[]
 ) {
   const handleClass =
-    "absolute w-[10px] h-[10px] bg-[#faf8f8] border-2 border-[#b7b7b7]";
+    "absolute w-[10px] h-[10px] bg-[#faf8f8] border-2 border-[#b7b7b7] z-20";
   const backgroundStyle = { background: backgroundColor };
-  const small = useWindowWidth() < 920;
+  const small = useWindowWidth() < 1056;
   return (
     <div
       style={backgroundStyle}
       className={`${
-        !small && "w-max"
-      } z-10 relative overflow-visible flex flex-col gap-2 border-2 border-[#b7b7b7]  text-neutral-900 p-5 px-9 ${
-        ptSerif.className
-      }`}
+        small ? "w-full max-w-2xl" : "w-max"
+      } z-10 relative overflow-visible flex flex-col gap-2 border-2 border-[#b7b7b7]  text-neutral-900 ${
+        small ? "p-4 px-5" : "p-5 px-9"
+      } ${ptSerif.className}`}
     >
-      <h1 className="text-[3rem] font-bold tracking-tighter font-thin">
+      <h1
+        className={`${
+          small
+            ? "text-[clamp(1.5rem,6vw,2.5rem)] leading-tight break-words"
+            : "text-[3rem]"
+        } font-bold tracking-tighter font-thin`}
+      >
         {company}
       </h1>
       <div
@@ -289,6 +298,11 @@ function JobBlock(
           <li key={desc}>{desc}</li>
         ))}
       </ul>
+      {small && (
+        <div className="mt-1">
+          <GraySkillStack skills={skills} />
+        </div>
+      )}
       <div
         style={backgroundStyle}
         className={`${handleClass} -top-1.5 -left-1.5`}

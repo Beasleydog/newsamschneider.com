@@ -23,19 +23,29 @@ export function Games() {
     >
       <motion.div
         className={`relative bg-black ${
-          small ? "mx-[2vw] mt-[3vw] m-[2vw]" : "mx-16 mt-24 m-16 h-[2100px]"
+          small ? "m-[2vw] mt-[6vw]" : "mx-16 mt-24 m-16 h-[2100px]"
         } rounded-3xl flex flex-row`}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.8 }}
       >
-        <div className={`${showArcadeMachine ? "w-[120%]" : "w-full"} p-12`}>
-          <div className="mb-8 p-8 mt-12 flex flex-col items-center">
+        <div
+          className={`${showArcadeMachine ? "w-[120%]" : "w-full"} ${
+            small ? "p-[4vw]" : "p-12"
+          }`}
+        >
+          <div
+            className={`flex flex-col items-center ${
+              small ? "mb-[5vw] mt-[3vw] px-[2vw]" : "mb-8 p-8 mt-12"
+            }`}
+          >
             <span
-              className={`font-bold mb-4 ${jersey15.className} z-10 flex flex-row items-center gap-4`}
+              className={`font-bold ${
+                small ? "mb-[2vw]" : "mb-4"
+              } ${jersey15.className} z-10 flex flex-row items-center gap-4`}
               style={{
                 lineHeight: "0",
-                fontSize: small ? "12vw" : "6rem",
+                fontSize: small ? "9vw" : "6rem",
                 textShadow: "2px 2px 4px rgba(0,0,0,0.3)",
               }}
             >
@@ -43,9 +53,11 @@ export function Games() {
               <span className="text-yellow-600 sparkle">{winningText}</span>
             </span>
             <pre
-              className={`whitespace-pre-wrap font-bold mb-4 ${jersey15.className}`}
+              className={`whitespace-pre-wrap font-bold ${
+                small ? "mb-[3vw]" : "mb-4"
+              } ${jersey15.className}`}
               style={{
-                fontSize: small ? "28vw" : "14rem",
+                fontSize: small ? "22vw" : "14rem",
                 lineHeight: "1",
                 color: "white",
                 textShadow: "2px 2px 4px rgba(0,0,0,0.3)",
@@ -56,11 +68,11 @@ export function Games() {
             <pre
               className="whitespace-pre-wrap"
               style={{
-                fontSize: "1.2rem",
+                fontSize: small ? "1rem" : "1.2rem",
                 lineHeight: "1.5",
                 color: "#ffff00",
                 textShadow: "2px 2px 4px rgba(0,0,0,0.3)",
-                width: small ? "74vw" : "unset",
+                width: small ? "82vw" : "unset",
               }}
             >
               {descriptionText}
@@ -126,13 +138,13 @@ function Game({
         <div className="flex flex-col flex-grow">
           <h1
             style={{
-              fontSize: "3rem",
-              lineHeight: "2.5rem",
+              fontSize: small ? "2rem" : "3rem",
+              lineHeight: small ? "1.9rem" : "2.5rem",
             }}
           >
             {title}
           </h1>
-          <div className="flex flex-row items-center gap-1 text-yellow-500">
+          <div className="flex flex-row flex-wrap items-center gap-1 text-yellow-500">
             {achievements.map((achievement, i) => (
               <div key={i} className="flex flex-row items-center gap-1">
                 <p>{achievement}</p>
@@ -140,7 +152,10 @@ function Game({
               </div>
             ))}
           </div>
-          <p className="leading-tight mt-2" style={{ fontSize: "1.2rem" }}>
+          <p
+            className="leading-tight mt-2"
+            style={{ fontSize: small ? "1rem" : "1.2rem" }}
+          >
             {description}
           </p>
         </div>
